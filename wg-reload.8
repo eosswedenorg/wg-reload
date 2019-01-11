@@ -1,0 +1,20 @@
+.TH WG-RELOAD 8 2019-01-11 Linux WireGuard
+
+.SH NAME
+wg-reload - reload peering/private key configuration for WireGuard interfaces.
+
+.SH SYNOPSIS
+.B wg-reload
+[
+.I INTERFACE
+]
+
+.SH DESCRIPTION
+
+This is a simple script around
+.BR wg (8)
+that tries to update configuration for WireGuard interface
+without bringing it down (wich can result in dropped connections)
+
+\fIINTERFACE\fP should be a valid WireGuard interface that is active with it's
+configration file located at `/etc/wireguard/\fIINTERFACE\fP.conf'
