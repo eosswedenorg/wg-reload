@@ -23,6 +23,6 @@ ${WG} setconf ${IFACE} <(sed -E '/^(\s)*(Address|DNS|MTU|PreUp|PostUp|PreUp|PreD
 if [ $? -eq 0 ]; then
 	echo "[OK] ${IFACE} was reloaded successfully"
 else
-	echo "[ERROR] '${CONFIG_FILE}' contains errors, interface was not reloaded"
+	echo "[ERROR] could not reload interface because of previous error."
 	exit 1
 fi
