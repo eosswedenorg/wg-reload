@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2019 Henrik hautakoski <henrik@eossweden.org>. All Rights Reserved.
+# Copyright (C) 2019 Henrik Hautakoski <henrik@eossweden.org>. All Rights Reserved.
 
 if [ $# -lt 1 ]; then
 	echo "usage ${0##*/} <interface>"
