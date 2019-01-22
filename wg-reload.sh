@@ -26,15 +26,26 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# Check if we need to update IP
-NEW_IP=$(sed -En 's/^[[:space:]]*Address[[:space:]]*\=[[:space:]]*([0-9\./]+)/\1/p' ${CONFIG_FILE})
-CURRENT_IP=$(${IP} -o -4 addr show ${IFACE} | awk '{print $4}')
+# To get rid of any old routing rules. We flush all of them :)
+# This will also remove the IP address(es) which is kind of nice because then
+# We don't need to check if it has been changed. can just add them :)
+echo "[ROUTE] Flushing routing table"
+${IP} addr flush ${IFACE}
 
-if [ "${NEW_IP}" != "${CURRENT_IP}" ]; then
-	echo "Update to ${NEW_IP}"
-	# NOTE: change,replace does NOT do what you want. have to use add+del
-	$IP addr add ${NEW_IP} dev ${IFACE}
-	$IP addr del ${CURRENT_IP} dev ${IFACE}
-fi
+# Add IP (This will also add the default route based on the CIDR-prefix)
+ipaddr=$(sed -En 's/^[[:space:]]*Address[[:space:]]*\=[[:space:]]*([0-9\./]+)/\1/p' ${CONFIG_FILE})
+echo "[IP] add ${ipaddr}"
+$IP addr add ${ipaddr} dev ${IFACE}
+
+# Reload routing rules
+for addr in $(${WG} show "${IFACE}" allowed-ips | sed -En 's/^.*\t([0-9\.]+\/[0-9]+)$/\1/p'); do
+
+	# Use ip command to lookup the address
+	# If it tells us that the address wont be routed via ${IFACE} we need to add it.
+	if [ -z "$(${IP} route get "${addr}" 2> /dev/null | grep "dev ${IFACE}")" ]; then
+		echo "[ROUTE] add ${addr}"
+		${IP} route add "$addr" dev "${IFACE}"
+	fi
+done
 
 echo "[OK] ${IFACE} was reloaded successfully"
