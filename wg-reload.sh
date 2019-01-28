@@ -12,6 +12,11 @@ IP=$(which ip)
 IFACE=$1
 CONFIG_FILE=/etc/wireguard/${IFACE}.conf
 
+# Call sudo if we are not root.
+if [ $UID != 0 ]; then
+	exec sudo -p "[sudo] root access is needed. password for %u: " -- "$BASH" -- "$0" "$@"
+fi
+
 if [ ! -f ${CONFIG_FILE} ]; then
 	echo "File '${CONFIG_FILE}' does not exist"
 	exit 1
