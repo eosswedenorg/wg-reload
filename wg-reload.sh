@@ -3,7 +3,7 @@
 # Copyright (C) 2019 Henrik Hautakoski <henrik@eossweden.org>. All Rights Reserved.
 
 if [ $# -lt 1 ]; then
-	echo "usage ${0##*/} <interface>"
+	echo "usage: ${0##*/} <interface>"
 	exit 1
 fi
 
