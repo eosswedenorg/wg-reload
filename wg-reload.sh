@@ -3,14 +3,20 @@
 # Copyright (C) 2019 Henrik Hautakoski <henrik@eossweden.org>. All Rights Reserved.
 
 if [ $# -lt 1 ]; then
-	echo "usage: ${0##*/} <interface>"
+	echo "usage: ${0##*/} [ INTERFACE | -v | --version ]"
 	exit 1
 fi
 
+VERSION=0.1
 WG=$(which wg)
 IP=$(which ip)
 IFACE=$1
 CONFIG_FILE=/etc/wireguard/${IFACE}.conf
+
+if [ $1 == "-v" ] || [ $1 == "--version" ]; then
+	echo "wg-reload v${VERSION}"
+	exit
+fi
 
 # Call sudo if we are not root.
 if [ $UID != 0 ]; then
