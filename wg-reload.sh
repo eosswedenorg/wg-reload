@@ -7,7 +7,7 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-VERSION=0.1
+VERSION=0.2
 WG=$(which wg)
 IP=$(which ip)
 IFACE=$1
