@@ -30,7 +30,7 @@ fi
 
 # Strip all wg-quick keys from the config file
 # and pass the string as input to setconf
-${WG} setconf ${IFACE} <(sed -E '/^[[:space:]]*(\#|Address|DNS|MTU|PreUp|PostUp|PreUp|PreDown|SaveConfig)/ d' ${CONFIG_FILE})
+${WG} setconf ${IFACE} <(sed -E '/^[[:space:]]*(\#|Address|DNS|MTU|PostUp|PostDown|PreUp|PreDown|SaveConfig)/ d' ${CONFIG_FILE})
 
 if [ $? -ne 0 ]; then
 	echo "[ERROR] could not reload interface because of previous error."
