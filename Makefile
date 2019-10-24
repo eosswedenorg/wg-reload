@@ -1,6 +1,6 @@
 
 NAME     ?= wg-reload
-VERSION  ?= 0.2
+VERSION  ?= 1.0
 PREFIX   ?= /usr/local
 BINDIR   ?= $(PREFIX)/bin
 SHAREDIR ?= $(PREFIX)/share/$(NAME)
