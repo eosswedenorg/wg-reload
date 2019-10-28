@@ -20,7 +20,7 @@ fi
 
 # Call sudo if we are not root.
 if [ $UID != 0 ]; then
-	exec sudo -p "[sudo] root access is needed. password for %u: " -- "$BASH" -- "$0" "$@"
+	exec sudo -p "[sudo] Root access is needed. Enter password for %u: " -- "$BASH" -- "$0" "$@"
 fi
 
 if [ ! -f ${CONFIG_FILE} ]; then
@@ -33,7 +33,7 @@ fi
 ${WG} setconf ${IFACE} <(sed -E '/^[[:space:]]*(\#|Address|DNS|MTU|PostUp|PostDown|PreUp|PreDown|SaveConfig)/ d' ${CONFIG_FILE})
 
 if [ $? -ne 0 ]; then
-	echo "[ERROR] could not reload interface because of previous error."
+	echo "[ERROR] Could not reload interface because of previous error."
 	exit 1
 fi
 
@@ -59,4 +59,4 @@ for addr in $(${WG} show "${IFACE}" allowed-ips | sed -En 's/^.*\t([0-9\.]+\/[0-
 	fi
 done
 
-echo "[OK] ${IFACE} was reloaded successfully"
+echo "[OK] ${IFACE} was reloaded successfully."
