@@ -1,0 +1,42 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Only for "version" tags
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: "Create: Package"
+        id: package
+        run: |
+          make deb
+          FILE=$(find ./scripts -type f -name "*.deb" 2> /dev/null | head -1)
+          echo ::set-output name=path::$FILE
+          echo ::set-output name=filename::$(basename $FILE)
+
+      - name: "Create: Release"
+        id: create
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create.outputs.upload_url }}
+          asset_path: ${{ steps.package.outputs.path }}
+          asset_name: ${{ steps.package.outputs.filename }}
+          asset_content_type: application/vnd.debian.binary-package
