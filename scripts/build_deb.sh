@@ -24,7 +24,7 @@ Architecture: all
 Homepage: https://github.com/eosswedenorg/wg-reload
 Maintainer: Henrik Hautakoski <henrik@eossweden.org>
 Description: ${PACKAGE_DESCRIPTION}
-Depends: bash (>= 4.3-14ubuntu1), wireguard" &> ${BASE_DIR}/${PACKAGE_TMPDIR}/DEBIAN/control
+Depends: bash (>= 4.3-14ubuntu1), wireguard, resolvconf" &> ${BASE_DIR}/${PACKAGE_TMPDIR}/DEBIAN/control
 
 cat ${BASE_DIR}/${PACKAGE_TMPDIR}/DEBIAN/control
 
